@@ -7,9 +7,17 @@ use App\Entity\Phone;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    private $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         $roles[] = 'ROLE_USER';
@@ -51,16 +59,16 @@ class AppFixtures extends Fixture
         $customer->setRoles((array)$roles);
         $this->addReference('Orange', $customer);
         $manager->persist($customer);
-
+        */
         $customer = new Customer();
         $customer->setEmail('SFR-client@outlook.fr');
-        $customer->setPassword('test');
+        $customer->setPassword($this->hasher->hashPassword($customer, 'test'));
         $customer->setOrganization('SFR');
         $customer->setRoles((array)$roles);
         $this->addReference('SFR', $customer);
 
         $manager->persist($customer);
-
+        /*
         $customer = new Customer();
         $customer->setEmail('Bouygues-client@outlook.fr');
         $customer->setPassword($this->hasher->hashPassword($customer, 'test'));
