@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Client;
 use App\Entity\Customer;
 use App\Entity\Phone;
 use App\Entity\User;
@@ -50,7 +51,6 @@ class AppFixtures extends Fixture
         ;
         $manager->persist($phone);
 
-        /*
         // === Customer ===
         $customer = new Customer();
         $customer->setEmail('Orange-client@outlook.fr');
@@ -59,7 +59,7 @@ class AppFixtures extends Fixture
         $customer->setRoles((array)$roles);
         $this->addReference('Orange', $customer);
         $manager->persist($customer);
-        */
+
         $customer = new Customer();
         $customer->setEmail('SFR-client@outlook.fr');
         $customer->setPassword($this->hasher->hashPassword($customer, 'test'));
@@ -68,7 +68,7 @@ class AppFixtures extends Fixture
         $this->addReference('SFR', $customer);
 
         $manager->persist($customer);
-        /*
+
         $customer = new Customer();
         $customer->setEmail('Bouygues-client@outlook.fr');
         $customer->setPassword($this->hasher->hashPassword($customer, 'test'));
@@ -85,8 +85,7 @@ class AppFixtures extends Fixture
             $customer = $this->getReference('SFR');
             $user->setFirstname('Jean-Charles-'.$i)
                 ->setLastName("Dubois")
-                ->setEmail('Jean-Charles@test.com')
-                ->setSlug('')
+                ->setEmail('Jean-Charles-'.$i.'@test.com')
                 ->setCreatedAt(new \DateTimeImmutable())
                 ->setCustomer($customer)
             ;
