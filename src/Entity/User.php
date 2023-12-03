@@ -4,8 +4,38 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use JMS\Serializer\Annotation\Groups;
+use Hateoas\Configuration\Annotation as Hateoas;
 
+/**
+ *   @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "api_get_users",
+ *          parameters = { "userId" = "expr(object.getId())" }
+ *      ),
+ *      exclusion = @Hateoas\Exclusion(groups="ShowUsers")
+ *      )
+ *
+ *   @Hateoas\Relation(
+ *      "delete",
+ *      href = @Hateoas\Route(
+ *          "api_delete_user",
+ *          parameters = { "userId" = "expr(object.getId())" },
+ *      ),
+ *      exclusion = @Hateoas\Exclusion(groups="ShowUsers")
+ *   )
+ *
+ *  *   @Hateoas\Relation(
+ *      "add",
+ *      href = @Hateoas\Route(
+ *          "api_post_user",
+ *      ),
+ *      exclusion = @Hateoas\Exclusion(groups="ShowUsers")
+ *   )
+ *
+ *
+ */
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
 {
@@ -20,18 +50,19 @@ class User
     private ?string $firstname = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(["ShowUserDetails"])]
+    #[Groups(["ShowUsers"])]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 100)]
-    #[Groups(["ShowUserDetails"])]
+    #[Groups(["ShowUsers"])]
     private ?string $email = null;
 
     #[ORM\Column]
-    #[Groups(["ShowUserDetails"])]
+    #[Groups(["ShowUsersDetails"])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
+    #[Groups(["ShowUsersDetails"])]
     private ?customer $customer = null;
 
     public function getId(): ?int

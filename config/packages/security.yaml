@@ -36,14 +36,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
-        #- { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/api/phones, roles: IS_AUTHENTICATED_FULLY }
-        #- { path: ^/api/phones/{id}, roles: IS_AUTHENTICATED_FULLY }
-        #- { path: ^/api/users, roles: IS_AUTHENTICATED_FULLY }
-        #- { path: ^/api/users/{userId}, roles: IS_AUTHENTICATED_FULLY }
-        #- { path: ^/api/user, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/login_check, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/doc, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
 when@test:
     security:
