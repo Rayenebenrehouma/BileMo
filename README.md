@@ -39,13 +39,13 @@ Principales fonctionnalités disponibles demandées par le client:
 ```
 5. Créez les différentes tables de la base de données en appliquant les migrations :
 ```
-    mkdir config\jwt
-openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa _keygen_bits:4096
-openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem  -pubout
+    php bin/console doctrine:migrations:migrate
 ```
 6. Générez les clef secrète et publique pour l'authentification JWT :
 ```
-    php bin/console doctrine:fixtures:load
+    mkdir config\jwt
+openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa _keygen_bits:4096
+openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem  -pubout
 ```
 7. Installez les fixtures pour avoir une démo de données fictives :
 ```
