@@ -6,13 +6,14 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation\Groups;
 use Hateoas\Configuration\Annotation as Hateoas;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  *   @Hateoas\Relation(
  *      "self",
  *      href = @Hateoas\Route(
- *          "api_get_users",
- *          parameters = { "userId" = "expr(object.getId())" }
+ *          "api_get_user_details",
+ *          parameters = { "userId" = "expr(object.getId())" },
  *      ),
  *      exclusion = @Hateoas\Exclusion(groups="ShowUsers")
  *      )
@@ -26,13 +27,6 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *      exclusion = @Hateoas\Exclusion(groups="ShowUsers")
  *   )
  *
- *  *   @Hateoas\Relation(
- *      "add",
- *      href = @Hateoas\Route(
- *          "api_post_user",
- *      ),
- *      exclusion = @Hateoas\Exclusion(groups="ShowUsers")
- *   )
  *
  *
  */
@@ -47,14 +41,20 @@ class User
 
     #[ORM\Column(length: 100)]
     #[Groups(["ShowUsers"])]
+    #[Assert\NotBlank(message: "Le firstname est obligatoire")]
+    #[Assert\Length(min: 1, max: 30, minMessage: "Le firstname doit faire au moins {{ limit }} caractères", maxMessage: "Le firstname ne peut pas faire plus de {{ limit }} caractères")]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 100)]
     #[Groups(["ShowUsers"])]
+    #[Assert\NotBlank(message: "Le lastname est obligatoire")]
+    #[Assert\Length(min: 1, max: 30, minMessage: "Le lastname doit faire au moins {{ limit }} caractères", maxMessage: "Le lastname ne peut pas faire plus de {{ limit }} caractères")]
     private ?string $lastname = null;
 
     #[ORM\Column(length: 100)]
     #[Groups(["ShowUsers"])]
+    #[Assert\NotBlank(message: "L'email est obligatoire")]
+    #[Assert\Length(min: 1, max: 30, minMessage: "L'email doit faire au moins {{ limit }} caractères", maxMessage: "L'email ne peut pas faire plus de {{ limit }} caractères")]
     private ?string $email = null;
 
     #[ORM\Column]

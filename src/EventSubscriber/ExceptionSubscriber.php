@@ -7,11 +7,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\KernelEvents;
+use App\Controller\UserController;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
-    public function onKernelException(ExceptionEvent $event): void
+    public function onKernelException(ExceptionEvent $event, $data): void
     {
+
         $exception = $event->getThrowable();
 
         if ($exception instanceof HttpException) {
@@ -21,10 +23,10 @@ class ExceptionSubscriber implements EventSubscriberInterface
             ];
 
             $event->setResponse(new JsonResponse($data));
-        } else {
+        }else {
             $data = [
-                'status' => 500, // Le status n'existe pas car ce n'est pas une exception HTTP, donc on met 500 par défaut.
-                'message' => $exception->getMessage()
+                'status' => 401,
+                'message' => "Forbidden :Vous n'avez pas les droits pour accéder à cette page ou cette page n'existe pas"
             ];
 
             $event->setResponse(new JsonResponse($data));

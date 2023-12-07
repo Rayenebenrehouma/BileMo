@@ -30,8 +30,17 @@ class PhoneController extends AbstractController
 
     //Détails des téléphone
     #[Route('/api/phones/{id}', name: 'phoneDetails', methods: ['GET'])]
-    public function getPhoneDetails(SerializerInterface $serializer, Phone $phone)
+    public function getPhoneDetails(SerializerInterface $serializer, PhoneRepository $phoneRepository, $id)
     {
+        $phone = $phoneRepository->find($id);
+        if ($phone === null){
+            $data = [
+                'status' => "404",
+                'message' => "Le téléphone n'existe pas en base de donnée"
+            ];
+            return new JsonResponse($data);
+        }
+
         $jsonPhone = $serializer->serialize($phone, 'json');
         return new JsonResponse($jsonPhone, Response::HTTP_OK, [], true);
     }
